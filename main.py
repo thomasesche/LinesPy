@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import Canvas
+import os
+import sys
 
 root = tk.Tk()
 root.title("LinesPy 1")
@@ -92,9 +94,15 @@ def pause(t):
 def key(key):
     return root.bind_all("<KeyPress-%s>" % key)
 
-with open("code.py", "r") as file:
-    code = file.read()
+script_dir = os.path.dirname(os.path.abspath(__file__))
+access = os.path.join(script_dir, "code.py")
 
-exec(code)
+if os.path.exists(access):
+    with open(access, "r") as file:
+        code_content = file.read()
+
+    exec(code_content, globals())
+else:
+    print("code.py not found in the same directory as main.py", 200, 200, size=20, color="black", anchor="no", blink=0)
 
 root.mainloop()
