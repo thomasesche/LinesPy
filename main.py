@@ -27,7 +27,15 @@ def line(x1, y1, x2, y2, thickness=1, color="black", cap="butt"):
 
 def rect(x, y, w, h, thickness=1, color="black", radius=0):
     if radius > 0:
-        canvas.arect_r(x, y, x+w, y+h, radius=radius, width=thickness, outline=color)
+        radius = min(radius, w // 2, h // 2)
+        canvas.create_arc(x, y, x + 2 * radius, y + 2 * radius, start=90, extent=90, outline=color, width=thickness, style=tk.ARC)
+        canvas.create_arc(x + w - 2 * radius, y, x + w, y + 2 * radius, start=0, extent=90, outline=color, width=thickness, style=tk.ARC)
+        canvas.create_arc(x, y + h - 2 * radius, x + 2 * radius, y + h, start=180, extent=90, outline=color, width=thickness, style=tk.ARC)
+        canvas.create_arc(x + w - 2 * radius, y + h - 2 * radius, x + w, y + h, start=270, extent=90, outline=color, width=thickness, style=tk.ARC)
+        canvas.create_line(x + radius, y, x + w - radius, y, fill=color, width=thickness)
+        canvas.create_line(x + radius, y + h, x + w - radius, y + h, fill=color, width=thickness)
+        canvas.create_line(x, y + radius, x, y + h - radius, fill=color, width=thickness)
+        canvas.create_line(x + w, y + radius, x + w, y + h - radius, fill=color, width=thickness)
     else:
         canvas.create_rectangle(x, y, x+w, y+h, width=thickness, outline=color)
 
