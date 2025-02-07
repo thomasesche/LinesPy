@@ -91,8 +91,26 @@ def pause(t):
     root.mainloop()
     root.update()
 
-def key(key):
-    return root.bind_all("<KeyPress-%s>" % key)
+keys_pressed = {}
+
+def on_key_press(event):
+    keys_pressed[event.keysym] = True
+
+def on_key_release(event):
+    keys_pressed[event.keysym] = False
+
+root.bind_all("<KeyPress>", on_key_press)
+root.bind_all("<KeyRelease>", on_key_release)
+
+def key(k):
+    mapping = {
+        "ArrowUp": "Up",
+        "ArrowDown": "Down",
+        "ArrowLeft": "Left",
+        "ArrowRight": "Right",
+        "Enter": "Return",
+    }
+    return keys_pressed.get(mapping.get(k, k), False)
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 access = os.path.join(script_dir, "code.py")
